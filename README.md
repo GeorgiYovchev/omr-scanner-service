@@ -69,3 +69,14 @@ See also [CHANGELOG.md](CHANGELOG.md).
 Production-ready for the 6/42 and 5/35 betslips. Verified on Windows 10 Pro 19045 (dozens of
 consecutive scans, reboot persistence, scanner unplug/replug recovery). Open items, with suggested approaches, are in
 [docs/09-handover.md](docs/09-handover.md#open-items--with-a-suggested-approach).
+
+## Notice
+
+**This repository is published for educational and reference purposes only.** It documents an
+independent integration with a third-party betslip scanner and its vendor-supplied SDK and driver,
+which remain the property of their respective owners and are redistributed here solely so the
+project is self-contained. No affiliation with or endorsement by the scanner's manufacturer is
+implied.
+
+**If you are a rights holder and want any part of this repository removed, open an issue or
+contact the repository owner and the content will be taken down promptly on request.**
