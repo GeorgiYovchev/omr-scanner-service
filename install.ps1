@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Install the OMR betslip-scanner service (SNBC BS-UL080 -> WebSocket) on a Windows 10/11 x64 terminal.
+  Install the OMR betslip-scanner service (BS-UL080 -> WebSocket) on a Windows 10/11 x64 terminal.
 
 .DESCRIPTION
   Clone or unzip this repository on the terminal (e.g. C:\omr-scanner), open PowerShell AS ADMINISTRATOR
@@ -40,7 +40,7 @@ $deps = Join-Path $root 'deps'; New-Item -ItemType Directory -Force -Path $deps 
 $svcDir = Join-Path $root 'service'
 
 # ---------------------------------------------------------------- 1 driver
-Step '1/7 USB driver (SNBC BYSUSB)'
+Step '1/7 USB driver (vendor BYSUSB)'
 if ($SkipDriver) { Warn 'skipped' }
 else {
     & pnputil.exe /add-driver (Join-Path $root 'driver\BSdriver_x64\bysusb.inf') /install | Out-Host

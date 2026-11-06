@@ -1,13 +1,13 @@
-r"""ctypes binding for LScannerSDK.dll (SNBC/BeiYang BS-UL080, Win64).
+r"""ctypes binding for LScannerSDK.dll (BS-UL080, Win64).
 
 Signatures recovered by decompiling the DLL with Ghidra (2026-10-16); see docs/02-sdk-api.md.
 The one that matters, and that was wrong for a whole day:
 
     int SInit(ScanCallback cb, const char* input_dir, const char* output_dir)
 
-  * arg1 is the SCAN-COMPLETE CALLBACK, not a path. SNBCInitImpl::PreParameter stores it
-    at this+8, SNBCInitImpl vtable[6] returns it, and
-    SNBCScanProcessControlImpl::notifyScanCompleteStatus calls it from the SDK scan thread
+  * arg1 is the SCAN-COMPLETE CALLBACK, not a path. VendorInitImpl::PreParameter stores it
+    at this+8, VendorInitImpl vtable[6] returns it, and
+    VendorScanProcessControlImpl::notifyScanCompleteStatus calls it from the SDK scan thread
     as  cb(int eventId, int* pData)  (x64 call site: ECX=eventId, RDX=&data).
       eventId 5 = decode result ready (data 2 = OMR)  -> SGetTicketInfo()
       eventId 3 = scan finished, nothing decoded      -> still eject

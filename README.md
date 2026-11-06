@@ -1,6 +1,6 @@
-# omr-scanner — SNBC BS-UL080 betslip scanner → WebSocket (Windows)
+# omr-scanner — BS-UL080 betslip scanner → WebSocket (Windows)
 
-Reads lotto.ge OMR betslips on the **SNBC / BeiYang BS-UL080(U)** USB scanner and publishes the
+Reads lotto.ge OMR betslips on the **BS-UL080(U)** USB scanner and publishes the
 decoded picks over a WebSocket in exactly the JSON the Linux POS terminals' publisher emits, so the
 POS frontend works unchanged:
 
@@ -43,7 +43,7 @@ Details and the offline/no-internet variant: [docs/04-install.md](docs/04-instal
 | `service/wsclient.py` | test client |
 | `install.ps1`, `uninstall.ps1`, `package.ps1` | deployment |
 | `sdk/` | vendor SDK (`LScannerSDK.dll`, `lib/`, `conf/`, demo app in `bin/`); its logs go to `sdk/log/` |
-| `driver/BSdriver_x64/` | SNBC USB kernel driver (`bysusb.inf`, 2012, signed) |
+| `driver/BSdriver_x64/` | vendor USB kernel driver (`bysusb.inf`, 2012, signed) |
 | `certs/` | `*.oddstech.net` wildcard cert used for `wss://` |
 | `tools/` | offline decoders, capture/probe scripts for new ticket types |
 | `docs/` | architecture, SDK API, ticket layouts, install, operations, troubleshooting, history |

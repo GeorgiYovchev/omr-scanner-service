@@ -11,7 +11,7 @@ needed to run the service.
 * `csharp/` — the C# WinForms host attempt (same wrong `SInit` call; decoding/mapping port is correct).
 * `captures/` — the test tickets as scanned BMPs (`rosetta.bmp`/`t1` = the 6/42 "Rosetta" slip with
   known Linux output, `t2`, `t3`), their raw buffers (`rosetta.txt`, `result_capture.txt`).
-* `driver-x86/` — the 32-bit variant of the SNBC driver (unused; the SDK is x64).
+* `driver-x86/` — the 32-bit variant of the vendor driver (unused; the SDK is x64).
 * `install-log-2026-10-16.txt` — transcript of the first installation.
 * `README-omr-service-2026-10-16.md` — the service README as of the day the root cause was found.
 

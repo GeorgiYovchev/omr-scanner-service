@@ -1,6 +1,6 @@
 # 2. LScannerSDK.dll — verified API
 
-Vendor: SNBC / BeiYang. `sdk/LScannerSDK.dll` v1.0.0.1 (x64, MFC, MSVC), 31 undecorated C exports,
+Vendor: the scanner manufacturer (name omitted in this public copy; the SDK's internal classes are written `Vendor*Impl` below, their real prefix is the vendor's name). `sdk/LScannerSDK.dll` v1.0.0.1 (x64, MFC, MSVC), 31 undecorated C exports,
 no documentation shipped. Everything below was established by decompiling the DLL with Ghidra
 (via [REA](https://github.com/morluto/rea)) and confirmed against the SDK's own logs and the live
 device on 2026-10-16. Addresses are image-relative to base `0x180000000`.
@@ -9,7 +9,7 @@ device on 2026-10-16. Addresses are image-relative to base `0x180000000`.
 
 | export | signature | notes |
 |---|---|---|
-| `SInit` | `int SInit(ScanCallback cb, const char* input_dir, const char* output_dir)` | **arg 1 is the callback** (see below). `input_dir` = folder containing `lib\`, `conf\`, `log\` (NULL/"" → the DLL's own folder); `output_dir` NULL → same. Opens the device. 0 = OK, `1001` = reader not found (`ScanPrnOpenDev ret=-2`), `1500` = init failed (runtime/driver). Logged as `SNBCInitImpl::SInit`; args recorded by `PreParameter` as `input_dir=… output_dir=…`. |
+| `SInit` | `int SInit(ScanCallback cb, const char* input_dir, const char* output_dir)` | **arg 1 is the callback** (see below). `input_dir` = folder containing `lib\`, `conf\`, `log\` (NULL/"" → the DLL's own folder); `output_dir` NULL → same. Opens the device. 0 = OK, `1001` = reader not found (`ScanPrnOpenDev ret=-2`), `1500` = init failed (runtime/driver). Logged as `VendorInitImpl::SInit`; args recorded by `PreParameter` as `input_dir=… output_dir=…`. |
 | `SStart` | `bool SStart(void)` | starts the SDK scan thread (`ScanProcessControlBase::scanThreadFunction`). |
 | `SStop` | `bool SStop(void)` | sets the stop flag, joins the scan thread (~200 ms). `0x3ec` on failure. |
 | `SRollBack` | `bool SRollBack(void)` | eject: device `FeedPaper {"direction":1,"distance":0,"time-out":10000}` then `notifyPaperFeedComplete` (wakes the parked scan thread). ~0.8 s. Returns false after a 10 s feed timeout. |
@@ -23,7 +23,7 @@ device on 2026-10-16. Addresses are image-relative to base `0x180000000`.
 | `LSQueryStatus`, `LSSendCommand`, `SGetHWInformation`, `SGetSWVersion`, `SGetBrandDpi`, `SGetScanDpi`, `SQueryCapability`, `SRecognizeItem`, `SAdjustSensibility`, `SPrintBrandImage`, `LSCalibrateSensor`, `LSUpgradeFirmware`, `GetConfigFile*`, `WriteConfigFile*`, `SGetLastErrorStr` | — | not used. `LSCalibrateSensor`/`LSUpgradeFirmware` touch device firmware — keep out. `SGetLastErrorStr` has an unknown signature (crashes with no args). |
 
 Every export is a thin forwarder: lock the API mutex (`DAT_1802eba70`), fetch the context
-singleton, call `vtable[n](this, args…)` on the matching `SNBC*Impl` object. Error 0x3e9 (1001)
+singleton, call `vtable[n](this, args…)` on the matching `Vendor*Impl` object. Error 0x3e9 (1001)
 is returned when the singleton is missing — so **1001 has two meanings**: "not initialised" and
 "ticket reader not found".
 
@@ -33,9 +33,9 @@ is returned when the singleton is missing — so **1001 has two meanings**: "not
 typedef void (*ScanCallback)(int eventId, int* pData);
 ```
 
-* Stored by `SNBCInitImpl::PreParameter` at `this+8`; `SNBCInitImpl::vftable` (0x18028c580)
+* Stored by `VendorInitImpl::PreParameter` at `this+8`; `VendorInitImpl::vftable` (0x18028c580)
   slot 6 (0x180015290) returns it.
-* Invoked by `SNBCScanProcessControlImpl::notifyScanCompleteStatus` (0x18001d940) **on the SDK scan
+* Invoked by `VendorScanProcessControlImpl::notifyScanCompleteStatus` (0x18001d940) **on the SDK scan
   thread**: `if (cb) { log("Calling scanner callback, eventId=%d, data=%d"); cb(eventId, &data);
   log("Scanner callback called successfully"); }`. Call site: `MOV ECX,R14D; LEA RDX,[RBP+0x6f];
   CALL R15`. Return value ignored.
@@ -66,7 +66,7 @@ offset  value
 The lower layer (`ScanPrnDevLib`) reports the raw decoder output as JSON (`{"count":1,"type":[13],
 "size":[351],...}`, type 13 = OMR, 351 = 22×15 chars + commas) and logs the grid as
 `pszOMRDecodeDest=100000010010011,…`; the SDK packs that into the words above with a column
-permutation — see [03-ticket-layouts](03-ticket-layouts.md#decomr-string--snbc-word).
+permutation — see [03-ticket-layouts](03-ticket-layouts.md#decomr-string--scanner-word).
 
 ## Scan-thread state machine (`scanThreadFunction`)
 
@@ -89,10 +89,10 @@ status` when the tray is empty — normal), so there are ~2 s between the eject 
 
 | symbol / address | role |
 |---|---|
-| `DAT_1802eba50` | the "Init interface" (`SNBCInitImpl`, 0x58 bytes: +8 callback, +0x10 `std::string input_dir`, +0x30 `output_dir`, +0x50 initialised flag) |
-| `DAT_1802ebc90 … DAT_1802ebd48` | the 24 `SNBC*Impl` singletons, created by `FUN_18001fa20` |
+| `DAT_1802eba50` | the "Init interface" (`VendorInitImpl`, 0x58 bytes: +8 callback, +0x10 `std::string input_dir`, +0x30 `output_dir`, +0x50 initialised flag) |
+| `DAT_1802ebc90 … DAT_1802ebd48` | the 24 `Vendor*Impl` singletons, created by `FUN_18001fa20` |
 | `DAT_1802eba30` | last error code; `DAT_1802ebc38` error reporter (`FUN_180002420(rep, fn, params, code)`) |
-| `FUN_180014b70` | `SNBCInitImpl::SInit`; `FUN_1800152a0` `PreParameter`; `FUN_180015010` `DisableInitStatus` (closes device; not exported) |
+| `FUN_180014b70` | `VendorInitImpl::SInit`; `FUN_1800152a0` `PreParameter`; `FUN_180015010` `DisableInitStatus` (closes device; not exported) |
 | `FUN_18001d940` | `notifyScanCompleteStatus`; `FUN_18001c160` `scanThreadFunction`; `FUN_18001baa0` `SStop`; `FUN_180017090` `ScannerIsReady`; `FUN_180018e60` `LSReceiveInfo` |
 | `FUN_180020d70` | unhandled-exception filter: writes a dump (`*_ScanPrnDevLib_*.dmp`), then `FatalAppExitA(0, msg)` = the "Fatal Application Exit" box, then exit |
 | `FUN_18000a360` + `FUN_18000ad60/a9d0/a770/a910/ac30` | logger / log helpers (`[SDK]` lines in `lscanner_*.log`) |

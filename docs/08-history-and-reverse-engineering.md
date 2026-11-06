@@ -5,15 +5,15 @@ unedited working notes are in [07-project-journal-raw.md](07-project-journal-raw
 
 ## Starting point
 
-* Hardware: SNBC BS-UL080(U) OMR scanner, vendor SDK (`lib64/` = `sdk/` here) with a demo app
+* Hardware: BS-UL080(U) OMR scanner, vendor SDK (`lib64/` = `sdk/` here) with a demo app
   (`LScannerSDKDemo.exe`) but no documentation, Chinese comments in the configs, Windows-only driver.
 * Reference: the Linux POS terminals use a *different* reader (Atmel-based "a4ocr"/GENLOT on
   `/dev/ttyACM`, `libreaderGENLOT.so`, C source in `/home/pos/test/pixel_scanner/`) feeding a node
-  WebSocket publisher on `wss://:8443`. Goal: produce the same JSON on Windows from the SNBC scanner.
+  WebSocket publisher on `wss://:8443`. Goal: produce the same JSON on Windows from the Windows scanner.
 
 ## Phase 1 — static analysis (2026-10-15)
 
-* `LScannerSDK.dll` exports 31 clean C functions; every export is a forwarder into an `SNBC*Impl`
+* `LScannerSDK.dll` exports 31 clean C functions; every export is a forwarder into a `Vendor*Impl`
   singleton. Arities recovered from the export prologues (`objdump`), e.g. `SInit` has 3 args,
   `SGetTicketInfo(buf, size)`.
 * Toolchain: [REA](https://github.com/morluto/rea) (MIT) driving Ghidra 12.1 headless, Node 22, JDK 21,
@@ -25,7 +25,7 @@ unedited working notes are in [07-project-journal-raw.md](07-project-journal-raw
   buffer: header + 22 big-endian row words = the 22×15 mark grid. Verified bit-for-bit against the
   demo's "Decode Result" panel.
 * The Linux terminal's publisher output was captured for a known ticket ("Rosetta", 6/42); its
-  `util.c` contained the `scara42`/`scara35` number tables. The SNBC grid matched those tables only
+  `util.c` contained the `scara42`/`scara35` number tables. The scanner grid matched those tables only
   after mirroring columns within each 7-column block (`blockmirror`). `genlot_map.py` reproduced the
   Linux JSON exactly. (`archive/captures/` holds the images and buffers used.)
 
@@ -48,8 +48,8 @@ Scanner callback called successfully
 Waiting for paper feed or print
 ```
 
-In ours: `Calling scanner callback` — and then nothing. Decompiling `SNBCInitImpl::PreParameter` and
-`SNBCInitImpl::vftable` slot 6 showed that **`SInit`'s first argument is the callback function
+In ours: `Calling scanner callback` — and then nothing. Decompiling `VendorInitImpl::PreParameter` and
+`VendorInitImpl::vftable` slot 6 showed that **`SInit`'s first argument is the callback function
 pointer**, not a base directory (arguments 2 and 3 are `input_dir`/`output_dir`, defaulting to the
 DLL's folder — which is why resources still loaded). We had been passing the string
 `"C:\…\lib64\bin"`; after each scan the SDK jumped into the string bytes → access violation →

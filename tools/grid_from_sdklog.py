@@ -48,7 +48,7 @@ def main():
                 continue
             raw = buffer_from_rows(rows)
             row0 = sorted(c for c in range(16) if g.decode_matrix(raw)[0][c])
-            print(f"{day} {tm}  row0 decomr={rows[0]} -> SNBC cols {row0} type={g.detect_type(raw) or 'unknown'}")
+            print(f"{day} {tm}  row0 decomr={rows[0]} -> scanner cols {row0} type={g.detect_type(raw) or 'unknown'}")
             print("   raw", raw.hex())
             print("   ", json.dumps(g.to_output(raw)))
 

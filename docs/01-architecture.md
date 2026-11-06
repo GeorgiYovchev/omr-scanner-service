@@ -14,7 +14,7 @@
                                      — or — start_omr.ps1 (scheduled task mode)
 ```
 
-* **Scanner + driver**: SNBC BS-UL080(U), USB `VID_154F&PID_2002`, kernel driver `BYSUSB.sys`
+* **Scanner + driver**: BS-UL080(U), USB `VID_154F&PID_2002`, kernel driver `BYSUSB.sys`
   (`driver/BSdriver_x64`). The device is *not* exclusive: two processes can open it at once and
   corrupt each other's transfers — never run the vendor demo while the service is running.
 * **Vendor SDK** (`sdk/`): `LScannerSDK.dll` (MFC-based, x64) on top of `lib/ScanPrnDevLib.dll`

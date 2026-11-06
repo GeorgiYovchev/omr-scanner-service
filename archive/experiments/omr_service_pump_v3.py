@@ -1,6 +1,6 @@
-"""OMR scanner -> WebSocket service (Windows / SNBC), matching the Linux box.
+"""OMR scanner -> WebSocket service (Windows), matching the Linux box.
 
-Single long-lived process. The SNBC SDK is MFC-based: its paper-feed/scan-complete
+Single long-lived process. The vendor SDK is MFC-based: its paper-feed/scan-complete
 notifications are delivered as WINDOW MESSAGES to the thread that called SInit. A
 plain Python thread has no message queue, so SRollBack never gets its "feed
 complete" message and wedges. Fix: the scanner thread creates a message queue and

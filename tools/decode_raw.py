@@ -1,7 +1,7 @@
 r"""Decode a raw SGetTicketInfo buffer (the `[scan] raw ...` hex from omr_service.log) offline.
 
   py -3.13 tools\decode_raw.py 012c000f0016008164...
-Prints the mark grid (SNBC column order), the detected type and the JSON the service would send.
+Prints the mark grid (scanner column order), the detected type and the JSON the service would send.
 """
 import json, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "service"))

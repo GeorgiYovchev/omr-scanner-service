@@ -2,7 +2,7 @@
 
 All current lotto.ge betslips share one print template: a left **timing track**, registration
 marks, and a **22-row × 15-column** mark grid organised as two 7-column blocks (columns 1–7 and
-9–15; column 0 is the timing mark, column 8 the separator, which the SNBC decoder never sets).
+9–15; column 0 is the timing mark, column 8 the separator, which the scanner's decoder never sets).
 The scanner returns which cells are filled; `service/genlot_map.py` turns that into numbers.
 
 ## Step 1 — decode the words
@@ -12,11 +12,11 @@ table, column `c` ← bit `15-c`. This is exactly `make_matrix()` from the Linux
 
 ## Step 2 — un-mirror the columns (`blockmirror`)
 
-The SNBC scanner reports columns **mirrored within each 7-column block** compared with the Linux
+The Windows scanner reports columns **mirrored within each 7-column block** compared with the Linux
 GENLOT/a4ocr reader whose tables we reuse:
 
 ```
-SNBC column c →  8 - c   for c in 1..7
+scanner column c →  8 - c   for c in 1..7
                  24 - c  for c in 9..15
                  c       for 0 and 8
 ```
@@ -39,7 +39,7 @@ Rows 0, 7, 14, 21 are frame rows (type markers + registration); they carry no pi
 
 ## Step 4 — detect the game type from row 0
 
-Row 0 contains fixed marker cells per template. In SNBC column order (before un-mirroring):
+Row 0 contains fixed marker cells per template. In scanner column order (before un-mirroring):
 
 | type | row-0 columns | word | GENLOT string (`util.c`) |
 |---|---|---|---|
@@ -58,10 +58,10 @@ Boards sorted ascending, `[]` when empty; `draws` = blocks (8, 9) for type 42, (
 This matches `parseCustomTextToJSON` in the Linux publisher (`pipe-websocket-publisher-https.js`)
 byte for byte — verified against a live capture.
 
-## decomr string ↔ SNBC word
+## decomr string ↔ scanner word
 
 The device layer logs every decode as a 22×15 string (`pszOMRDecodeDest=100000010010011,…`).
-Position `p` of that string maps to SNBC column: `p 0..6 → 7-p`, `p 7 → 0`, `p 8..14 → 23-p`.
+Position `p` of that string maps to scanner column: `p 0..6 → 7-p`, `p 7 → 0`, `p 8..14 → 23-p`.
 `tools/grid_from_sdklog.py` applies this so scans can be reconstructed from the SDK log alone
 (e.g. scans made while the service was not running, or by the vendor demo).
 

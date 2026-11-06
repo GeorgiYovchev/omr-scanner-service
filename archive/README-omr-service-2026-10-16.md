@@ -1,6 +1,6 @@
-# OMR betslip scanner service (Windows / SNBC BS-UL080)
+# OMR betslip scanner service (Windows / BS-UL080)
 
-Reads lotto.ge betslips on the SNBC/BeiYang **BS-UL080(U)** OMR scanner and publishes the
+Reads lotto.ge betslips on the **BS-UL080(U)** OMR scanner and publishes the
 decoded picks over a WebSocket in the exact format the Linux terminals' publisher uses:
 
 ```json
@@ -28,7 +28,7 @@ paper in ──► SDK scan thread (LScannerSDK.dll) ──callback(eventId, &da
   the SDK execute garbage after every scan: "Fatal Application Exit", process exit mid-eject,
   unkillable zombie. `input_dir` = folder holding `lib\`, `conf\`, `log\` (NULL → DLL folder).
 * `genlot_map.py` – 22×15 mark grid → numbers, using the GENLOT `scara42`/`scara35` tables
-  from the Linux reader's source; SNBC columns are mirrored within each 7-column block.
+  from the Linux reader's source; scanner columns are mirrored within each 7-column block.
 * `omr_service.py` – the service (asyncio WebSocket + scanner worker thread). Self-healing:
   retries `SInit` until the scanner is present; exits with code 3 when the SDK scan thread dies
   (last error `0x3f0`, scanner unplugged) so the launcher restarts it. Logs: `logs\omr_service.log`
@@ -43,7 +43,7 @@ concurrently with the SDK scan thread. Health is read from `SGetLastErrorCode()`
 
 ## Install on a terminal
 
-See `..\install.ps1` (run as Administrator). Prerequisites it handles: SNBC USB driver
+See `..\install.ps1` (run as Administrator). Prerequisites it handles: vendor USB driver
 (`..\BSdriver_x64`), VC++ 2013 + 2015-2022 x64 runtimes, Python 3.13 x64 + `websockets`,
 firewall rule, scheduled task **OMR-Scanner** (runs at logon of the kiosk user, restarts on failure).
 `..\package.ps1` builds the zip to copy over. Cert: put `fullchain.pem` + `privkey.pem`

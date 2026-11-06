@@ -17,7 +17,7 @@ PSRemotingProtocolVersion: 2.3
 SerializationVersion: 1.1.0.1
 **********************
 
-== 1/7 USB driver (SNBC BYSUSB)
+== 1/7 USB driver (vendor BYSUSB)
    !!  skipped
 
 == 2/7 Visual C++ runtimes

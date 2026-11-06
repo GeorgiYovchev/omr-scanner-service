@@ -57,7 +57,7 @@ def _logger() -> logging.Logger:
 class OmrScannerService(win32serviceutil.ServiceFramework):
     _svc_name_ = "OMRScanner"
     _svc_display_name_ = "OMR Betslip Scanner"
-    _svc_description_ = "SNBC BS-UL080 betslip scanner -> WebSocket JSON (supervises service\\omr_service.py)"
+    _svc_description_ = "BS-UL080 betslip scanner -> WebSocket JSON (supervises service\\omr_service.py)"
     _exe_name_ = _python_exe()                       # host the service in python.exe
     _exe_args_ = f'"{os.path.abspath(__file__)}"'
 

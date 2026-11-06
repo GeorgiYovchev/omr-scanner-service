@@ -1,4 +1,4 @@
-r"""OMR scanner -> WebSocket service (Windows / SNBC BS-UL080), callback model.
+r"""OMR scanner -> WebSocket service (Windows / BS-UL080), callback model.
 
 Mirrors the vendor demo, the one implementation known to run for hours:
   SInit(callback) -> SStart -> the SDK scan thread auto-scans on paper insert, calls

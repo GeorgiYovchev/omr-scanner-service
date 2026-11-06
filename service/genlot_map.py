@@ -1,4 +1,4 @@
-"""Map an SNBC SGetTicketInfo buffer -> lottery numbers, using the GENLOT
+"""Map an SDK SGetTicketInfo buffer -> lottery numbers, using the GENLOT
 scara tables recovered from the Linux pixel_scanner util.c source.
 
 Decode matches util.c make_matrix(): 7-byte header skipped, then 22 rows x 16
@@ -100,9 +100,9 @@ def extract(raw: bytes, scara, mode: str) -> dict[int, list[int]]:
     return blocks
 
 
-# row0 (matrix row 0) signatures per ticket type, in set-of-columns form (SNBC order,
+# row0 (matrix row 0) signatures per ticket type, in set-of-columns form (scanner order,
 # i.e. before blockmirror). GENLOT util.c: 42 = "1100000010010011", 35 = "1100000010101001";
-# mirrored into SNBC order (col 8 is a separator the SNBC grid never sets) that gives
+# mirrored into scanner order (col 8 is a separator the scanner grid never sets) that gives
 # 42 = word 0x8164 cols {0,7,9,10,13}, 35 = word 0x814A cols {0,7,9,12,14} - both seen live.
 TYPE_SIGNATURES = {
     frozenset({0, 7, 9, 10, 13}): 42,

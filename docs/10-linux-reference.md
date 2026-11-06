@@ -8,7 +8,7 @@ on terminal `.248` (`172.16.30.161`) on 2026-10-16; it is the contract to keep m
 
 ```
 a4ocr / GENLOT reader (Atmel AT91SAM CDC, USB 03eb:6119, /dev/ttyACM1, fw 22011211/V1.107)
-   │  libreaderGENLOT.so  (API mirrors the SNBC one: ReaderInit/Start/Stop/IsComplete/IsReady/GetTicketInfo/RollBack/GetOriginImage)
+   │  libreaderGENLOT.so  (API mirrors the Windows SDK's: ReaderInit/Start/Stop/IsComplete/IsReady/GetTicketInfo/RollBack/GetOriginImage)
    ▼
 pixel_scanner_recompiled   (/home/pos/test/pixel_scanner/, C source: main.c util.c communication.c; systemd pixel-scanner.service, Nice=15)
    │  writes decoded TEXT to a named pipe /home/pos/test/node/pipe1
@@ -34,15 +34,15 @@ scan) and `output.log`.
   for type 35 indexes > 5 (our `to_output` mirrors this: (8, 9) and (6, 7, 8, 9)).
 * One message per scan; nothing is sent for unreadable slips; no acknowledgements.
 
-Captured sample (Rosetta ticket, scanned 3× identically on Linux) — the same slip on the SNBC
+Captured sample (Rosetta ticket, scanned 3× identically on Linux) — the same slip on the Windows
 scanner through this service gives the identical message.
 
 ## Where the number tables come from
 
 `util.c` contains `scara42` and `scara35` (22×16 ints, `block*100+number`) and detects the type
 from the first matrix row: `"1100000010010011"` = 42, `"1100000010101001"` = 35. `make_matrix()`
-skips a 7-byte header and expands 22 big-endian words — the same buffer layout the SNBC SDK
-returns, except that SNBC columns are mirrored within each 7-column block
+skips a 7-byte header and expands 22 big-endian words — the same buffer layout the vendor SDK
+returns, except that scanner columns are mirrored within each 7-column block
 ([03-ticket-layouts](03-ticket-layouts.md)). Any new game must get its table in **both** places.
 
 ## Open question that affects Windows terminals

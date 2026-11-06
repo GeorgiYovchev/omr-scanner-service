@@ -5,8 +5,8 @@
 | item | detail |
 |---|---|
 | Windows | 64-bit Windows 10/11 (verified: 10 Pro 19045). The SDK and driver are x64-only. |
-| Scanner | SNBC / BeiYang BS-UL080(U), USB `VID_154F&PID_2002` |
-| Driver | `driver/BSdriver_x64` (`bysusb.inf`, SNBC v3.2.0.0, 2012, signed cat). Installed with `pnputil`. |
+| Scanner | BS-UL080(U), USB `VID_154F&PID_2002` |
+| Driver | `driver/BSdriver_x64` (`bysusb.inf`, vendor v3.2.0.0, 2012, signed cat). Installed with `pnputil`. |
 | VC++ runtimes | 2015-2022 x64 **and** 2013 x64 (the DLLs import `VCRUNTIME140/MSVCP140` and `MSVCR120`) |
 | Python | 3.13 x64 (`py -3.13`), packages `websockets` (13–17) and, for service mode, `pywin32` |
 | TLS | `certs/fullchain.pem` + `certs/privkey.pem` → `wss://`; absent → `ws://` (an https page cannot connect to `ws://`) |

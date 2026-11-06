@@ -7,7 +7,7 @@ then this page; everything else is reference.
 
 | area | state |
 |---|---|
-| Decoding 6/42 and 5/35 betslips on the SNBC BS-UL080 | done, verified against the Linux terminals' output and physical slips |
+| Decoding 6/42 and 5/35 betslips on the BS-UL080 | done, verified against the Linux terminals' output and physical slips |
 | WebSocket output in the Linux publisher's format | done (`{type, blocks, draws}`, `wss://:8443`) |
 | Stability (continuous scanning, scanner unplug/replug, reboot) | done; root cause of the earlier instability documented in [08](08-history-and-reverse-engineering.md) |
 | Windows service (`OMRScanner`) + installer + packaging | done, installed and scan-tested on the development PC |
@@ -25,7 +25,7 @@ including the vendor SDK, the driver and the certificate. Do not rely on anythin
 | code, SDK, driver, cert, installer, docs | this repo — `https://gitlab.oddstech.net/devops/omr-scanner` |
 | Linux reference implementation (the thing we mimic) | POS terminal `.248` (`172.16.30.161`, user `pos`): `/home/pos/test/pixel_scanner/` (C source: `main.c`, `util.c`, `communication.c`, `Makefile`), `/home/pos/test/node/pipe-websocket-publisher-https.js`, systemd units `pixel-scanner`, `omr-websocket`. Details: [10-linux-reference](10-linux-reference.md). Credentials: DevOps password store / terminal onboarding notes, not in this repo. |
 | POS frontend | `https://stage-lotto-pos.oddstech.net` (stage); the scanner socket URL it opens is the open question below |
-| vendor | SNBC / BeiYang, scanner model BS-UL080(U). No support contact was used; the SDK came with the device. |
+| vendor | the scanner manufacturer (name omitted in this public copy), scanner model BS-UL080(U). No support contact was used; the SDK came with the device. |
 | RE tooling | [REA](https://github.com/morluto/rea) + Ghidra (free). Not needed to run or extend the service; needed only to go deeper into the DLL. Findings so far are in [02-sdk-api](02-sdk-api.md). |
 
 ## Working on it
@@ -113,7 +113,7 @@ the raw grid, has sensitivity / status / firmware buttons. **Stop the service be
 | board / block | one 1…42 (or 1…35) number area on the slip; `blocks` in the JSON |
 | type 42 / 35 | 6-from-42 lotto / 5-from-35 "Golden Ball" templates |
 | scara table | the row×column → `block*100+number` table from the Linux reader's `util.c` |
-| SNBC / BeiYang | the scanner vendor; `SNBC*Impl` are the SDK's internal classes |
+| Vendor | the scanner manufacturer (name omitted here); `Vendor*Impl` are the SDK's internal classes, whose real prefix is the vendor's name |
 | GENLOT / a4ocr | the Linux terminals' different reader hardware/SDK |
 | eject / `SRollBack` | feeding the slip back out after a scan |
 | session 0 | where Windows services run (no desktop); the service works there |
