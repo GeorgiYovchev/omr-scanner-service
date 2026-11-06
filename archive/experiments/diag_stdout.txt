@@ -1,0 +1,4 @@
+SInit: 0
+SStart: True
+>>> INSERT ONE TICKET NOW — watching ScanIsComplete for 40s <<<
+11:57:41 ScanIsComplete = 0 ScannerIsReady = 1

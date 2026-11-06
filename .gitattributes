@@ -1,0 +1,10 @@
+# Vendor SDK, driver and archived captures: store byte-exact, never normalize line endings.
+sdk/**      -text
+driver/**   -text
+archive/**  -text
+certs/**    -text
+# Scripts that Windows runs: keep CRLF out of the way of PowerShell/Python (LF is fine for both).
+*.ps1  text eol=lf
+*.py   text eol=lf
+*.md   text eol=lf
+*.json text eol=lf

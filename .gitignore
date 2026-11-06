@@ -1,0 +1,13 @@
+# Only runtime junk is ignored - this repo is the complete, self-contained copy of the project
+# (certs included on purpose: the machine it was built on is being decommissioned).
+service/logs/*
+!service/logs/.gitkeep
+sdk/log/*
+!sdk/log/.gitkeep
+sdk/bin/scan_temp.bmp
+*.dmp
+install*.log
+__pycache__/
+*.pyc
+*.zip
+certs/*.pem

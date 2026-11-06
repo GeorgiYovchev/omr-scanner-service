@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "C:\Users\georgi.yovchev_oddst\AppData\Local\Programs\Python\Python313\Lib\asyncio\windows_events.py", line 463, in finish_socket_func
+    return ov.getresult()
+           ~~~~~~~~~~~~^^
+OSError: [WinError 64] The specified network name is no longer available
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\georgi.yovchev_oddst\AppData\Local\Programs\Python\Python313\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
+    length = fut.result()
+  File "C:\Users\georgi.yovchev_oddst\AppData\Local\Programs\Python\Python313\Lib\asyncio\windows_events.py", line 804, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Users\georgi.yovchev_oddst\AppData\Local\Programs\Python\Python313\Lib\asyncio\windows_events.py", line 467, in finish_socket_func
+    raise ConnectionResetError(*exc.args)
+ConnectionResetError: [WinError 64] The specified network name is no longer available
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Repos\gitlab\OMR\omr-service\wsclient.py", line 18, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^

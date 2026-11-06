@@ -1,0 +1,3 @@
+[ws] listening on ws://0.0.0.0:8444
+[scan] armed — insert a betslip
+[scan] -> {"type": 42, "blocks": [[1, 9, 17, 25, 33, 41], [], [18, 19, 20, 24, 30, 36], [], [1, 7, 12, 24, 32, 42]], "draws": []}

@@ -1,0 +1,50 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261016153429
+Username: ODDS-GYOVCHEV-0\georgi.yovchev_oddst
+RunAs User: ODDS-GYOVCHEV-0\georgi.yovchev_oddst
+Configuration Name: 
+Machine: ODDS-GYOVCHEV-0 (Microsoft Windows NT 10.0.19045.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NoExit -ExecutionPolicy Bypass -File C:\Repos\gitlab\OMR\install.ps1 -SkipDriver -SkipRuntimes -SkipPython
+Process ID: 26392
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+
+== 1/7 USB driver (SNBC BYSUSB)
+   !!  skipped
+
+== 2/7 Visual C++ runtimes
+   !!  skipped
+
+== 3/7 Python 3.13 x64 + websockets
+   !!  skipped
+
+== 4/7 TLS certificate
+   OK  certs\fullchain.pem + privkey.pem found -> wss://
+
+== 5/7 Firewall
+   OK  inbound TCP 8443 allowed for C:\Users\georgi.yovchev_oddst\AppData\Local\Programs\Python\Python313\python.exe
+
+== 6/7 Autostart
+   OK  scheduled task 'OMR-Scanner' runs at logon of ODDS-GYOVCHEV-0\georgi.yovchev_oddst, restarts on failure
+
+== 7/7 Start now
+   OSError: [Errno 10048] error while attempting to bind on address ('0.0.0.0', 8443): [winerror 10048] only one usage of each socket address (protocol/network address/port) is normally permitted
+   2026-10-16 15:33:46,015 INFO === omr_service exit 1 ===
+   2026-10-16 15:34:33,706 INFO === omr_service starting (pid 18572) ===
+   2026-10-16 15:34:33,748 INFO [ws] listening on wss://0.0.0.0:8443
+   2026-10-16 15:34:34,121 INFO [scan] SInit: 0
+   2026-10-16 15:34:34,122 INFO [scan] SStart: True - armed, insert a betslip
+
+Done. Quick test:  py -3.13 "C:\Repos\gitlab\OMR\omr-service\wsclient.py" wss://127.0.0.1:8443 60   then insert a betslip.
+**********************
+Windows PowerShell transcript end
+End time: 20261016153440
+**********************

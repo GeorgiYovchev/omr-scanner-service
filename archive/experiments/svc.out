@@ -1,0 +1,6 @@
+[ws] listening on ws://0.0.0.0:8443
+[scan] SInit: 0
+[scan] SStart: True
+[scan] armed — insert a betslip
+[ws] client connected (1 total)
+[scan] -> {"type": 42, "blocks": [[1, 9, 17, 25, 33, 41], [], [18, 19, 20, 24, 30, 36], [], [1, 7, 12, 24, 32, 42]], "draws": []}

@@ -1,0 +1,14 @@
+SInit: 0
+SStart: True
+>>> INSERT THE BETSLIP NOW (polling up to 45s) <<<
+GOT RESULT (SGetTicketInfo rc=51)
+
+--- result length (to last non-NUL): 51 bytes ---
+[hex]
+012c000f001600814a220200041808020810040000814000120004000200100000000081400000000000000000000000008140
+[ascii] <decode failed: 'ascii' codec can't decode byte 0x81 in position 7: ordinal not in range(128)>
+[utf-8] <decode failed: 'utf-8' codec can't decode byte 0x81 in position 7: invalid start byte>
+[utf-16-le] <decode failed: 'utf-16-le' codec can't decode byte 0x40 in position 50: truncated data>
+[gb2312] <decode failed: 'gb2312' codec can't decode byte 0x81 in position 7: illegal multibyte sequence>
+[gbk] <decode failed: 'charmap' codec can't encode character '\u4e23' in position 14: character maps to <undefined>>
+SRollBack (eject): True
